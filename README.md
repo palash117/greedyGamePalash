@@ -21,3 +21,6 @@ KEY POINTS:
 5) Maintainability: Adding new functionality like remove node can also be easily added in thread safe manner by adding new processor (like insertProcessor). 
 
 
+IMPROVEMENTS POSSIBLE:
+1) Request validation
+2) Graceful termination by adding quit channel for all processors
