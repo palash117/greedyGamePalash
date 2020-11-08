@@ -25,6 +25,9 @@ IMPROVEMENTS POSSIBLE:
 1) Request validation
 2) Graceful termination by adding quit channel for all processors
 
+TESTS:
+  Tests wirtten for core logic of inserting into tree and fetching from tree // insertProcessor and fetchProcesser go files
+
 POSTMAN LINK:
 https://www.getpostman.com/collections/7831c0a082cc4cd623c9
 
