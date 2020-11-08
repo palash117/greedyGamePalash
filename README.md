@@ -1,4 +1,4 @@
 # greedyGamePalash
 Backend Assignment | GreedyGame
 
-![design](https://imgur.com/a/xRofWha)
+![design](https://i.imgur.com/5eDfsXX.jpg)
