@@ -24,3 +24,6 @@ KEY POINTS:
 IMPROVEMENTS POSSIBLE:
 1) Request validation
 2) Graceful termination by adding quit channel for all processors
+
+POSTMAN LINK:
+https://www.getpostman.com/collections/7831c0a082cc4cd623c9
