@@ -30,5 +30,5 @@ https://www.getpostman.com/collections/7831c0a082cc4cd623c9
 
 HOW TO RUN:
 Dockerized as requested. 
-$>docker build .
-$>docker run -d -p 8080:8080 <image_id>
+1)$>docker build .
+2)$>docker run -d -p 8080:8080 <image_id>
