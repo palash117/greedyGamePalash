@@ -20,23 +20,27 @@ func process(requestChan chan *dto.FormattedRequest, rootstate *state.Node) {
 
 	for {
 		req := <-requestChan
-		currentNode := rootstate
-		atomic.AddUint64(currentNode.Webreq, req.RequestData.Webreq)
-		atomic.AddUint64(currentNode.Timespent, req.RequestData.Timespent)
-		for _, level := range req.RequestData.Dim {
+		performInsertion(rootstate, req)
+	}
+}
 
-			currentNode.Mutex.Lock()
-			child, present := currentNode.Children[state.GetKey(level.LevelName, level.LevelValue)]
-			if !present {
-				child = &state.Node{LevelType: level.LevelName, LevelValue: level.LevelValue, Webreq: new(uint64), Timespent: new(uint64), Children: make(map[string]*state.Node), Mutex: &sync.Mutex{}}
-				currentNode.Children[state.GetKey(level.LevelName, level.LevelValue)] = child
-			}
-			currentNode.Mutex.Unlock()
+func performInsertion(rootstate *state.Node, req *dto.FormattedRequest) {
+	currentNode := rootstate
+	atomic.AddUint64(currentNode.Webreq, req.RequestData.Webreq)
+	atomic.AddUint64(currentNode.Timespent, req.RequestData.Timespent)
+	for _, level := range req.RequestData.Dim {
 
-			atomic.AddUint64(child.Webreq, req.RequestData.Webreq)
-			atomic.AddUint64(child.Timespent, req.RequestData.Timespent)
-			currentNode = child
-
+		currentNode.Mutex.Lock()
+		child, present := currentNode.Children[state.GetKey(level.LevelName, level.LevelValue)]
+		if !present {
+			child = &state.Node{LevelType: level.LevelName, LevelValue: level.LevelValue, Webreq: new(uint64), Timespent: new(uint64), Children: make(map[string]*state.Node), Mutex: &sync.Mutex{}}
+			currentNode.Children[state.GetKey(level.LevelName, level.LevelValue)] = child
 		}
+		currentNode.Mutex.Unlock()
+
+		atomic.AddUint64(child.Webreq, req.RequestData.Webreq)
+		atomic.AddUint64(child.Timespent, req.RequestData.Timespent)
+		currentNode = child
+
 	}
 }

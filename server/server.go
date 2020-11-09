@@ -6,15 +6,16 @@ import (
 	"greedyGamePalash/dto"
 	"greedyGamePalash/processors/requestProcessors"
 	"net/http"
+	"os"
 
 	"greedyGamePalash/util"
 )
 
 var (
-	// PORT = os.Getenv("DC_PORT")
+	PORT = fmt.Sprintf(":%v", os.Getenv("DC_PORT"))
 	// IP   = os.Getenv("DC_IP")
-	PORT = ":8080"
-	IP   = "localhost"
+	// PORT = ":8080"
+	// IP   = "localhost"
 )
 
 func insertHandler(w http.ResponseWriter, req *http.Request) {
@@ -26,6 +27,7 @@ func insertHandler(w http.ResponseWriter, req *http.Request) {
 	formattedReqeust := util.FormatRequest(request, dto.INSERT)
 	requestProcessors.AddRequest(formattedReqeust)
 	// request_processors.
+	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("ok"))
 }
 
@@ -43,13 +45,15 @@ var fetchHandler = func(w http.ResponseWriter, req *http.Request) {
 	response.Dim = request.Dim
 	response.Metrics = []dto.KeyWithIntVal{{Key: "webreq", Val: int(*(data.Webreq))}, {Key: "timespent", Val: int(*(data.Timespent))}}
 	byteResp, _ := json.Marshal(response)
+
+	w.WriteHeader(http.StatusOK)
 	w.Write(byteResp)
 }
 
 func Start() {
+
 	http.HandleFunc("/insert", insertHandler)
 	http.HandleFunc("/query", fetchHandler)
-
 	err := http.ListenAndServe(PORT, nil)
-	fmt.Errorf("error", err)
+	fmt.Errorf("error %v", err)
 }
