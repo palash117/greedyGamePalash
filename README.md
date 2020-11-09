@@ -9,7 +9,7 @@ Http Module insert/fetch request are pushed to RequestProcessor channel. Insert 
 RequestProcessor fans out the request based on type(insert or fetch) to InsertProcessor or FetchProcessor
 
 
-KEY POINTS:
+KEY POINTS:  
 1) RequestProcessor also sends all the request of insert type to InsertLogProcessor as well. InsertLogProcessor writes down the insert queries to log, so that they can be used to reconstruct the Data collection state incase of system failure.
 
 2) The updates to the data collection state are written in thread safe manner. All updates to counter values are done atomicaly and rare case of duplication insertion of any new node is prevented by using mutexes.
@@ -21,3 +21,17 @@ KEY POINTS:
 5) Maintainability: Adding new functionality like remove node can also be easily added in thread safe manner by adding new processor (like insertProcessor). 
 
 
+IMPROVEMENTS POSSIBLE:  
+1) Request validation
+2) Graceful termination by adding quit channel for all processors
+
+TESTS:  \
+  Tests wirtten for core logic of inserting into tree and fetching from tree // insertProcessor and fetchProcesser go files
+
+POSTMAN LINK:
+https://www.getpostman.com/collections/7831c0a082cc4cd623c9
+
+HOW TO RUN:
+Dockerized as requested. \
+$>docker build .  \
+$>docker run -d -p 8080:8080 <image_id>
